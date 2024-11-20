@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Скириджинжонжики))</title>
+    <style>
+        table {margin-top:15px;}
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div><a href="chikibambonis">Чикибамбонис</a></div>
+    <div><a href="skiridjinjonjis">Скириджинжонжи</a></div>
+
+</header>
+<form method="POST" action="/skiridjinjonji">
+    <p>Для создания новой записи</p>
+    <input placeholder="Название" type="text" required name="title">
+    <input placeholder="Витали))" type="text" required name="vitali">
+    <button type="submit">Заскириджинжонжить</button>
+</form>
+
+<form>
+    <p>Для редактирования</p>
+    <input placeholder="Название" type="text" required name="title" id="edT">
+    <input placeholder="Витали))" type="text" required name="vitali" id="edV">
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Витали))</th>
+            <th>Удаление</th>
+        </tr>
+    </thead>
+    <tbody>
+        <th:block th:each="skiridjinjonji: ${skiridjinjonjis}">
+            <tr>
+                <td th:text="${skiridjinjonji.getId()}"></td>
+                <td th:text="${skiridjinjonji.getTitle()}"></td>
+                <td th:text="${skiridjinjonji.getVitali()}"></td>
+                <td><button th:onclick="@{'deleteSkiridjinjonji('+${skiridjinjonji.getId()}+');'}">Разскириджинжонжить(</button></td>
+                <td><button th:onclick="@{'editSkiridjinjonji('+${skiridjinjonji.getId()}+');'}">Отскириджинжонжить</button></td>
+            </tr>
+        </th:block>
+    </tbody>
+</table>
+<script>
+    function deleteSkiridjinjonji(skiridjinjonjiId) {
+        fetch(`/skiridjinjonji?id=${skiridjinjonjiId}`, {method: 'DELETE'})
+            .then(response => {
+                location.reload();
+            }
+        )
+    }
+    function editSkiridjinjonji(skiridjinjonjiId) {
+        const edT = document.getElementById('edT').value;
+        const edV = document.getElementById('edV').value;
+        fetch(`/skiridjinjonji?id=${skiridjinjonjiId}&title=${edT}&vitali=${edV}`, {method: 'PUT'})
+            .then(response => {
+                location.reload();
+            }
+        )
+    }
+</script>
+</body>
+</html>

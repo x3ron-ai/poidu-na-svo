@@ -1,61 +1,48 @@
 package com.stariybog2.pupupu.controllers;
 
+import com.stariybog2.pupupu.Models.Skiridjinjonji;
+import com.stariybog2.pupupu.Service.SkiridjinjonjiService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Controller
 public class MainController {
-    @GetMapping("/")
-    public String mainUri(Model model) {
-        model.addAttribute("name", "SHAVUH1N");
-        return "homePage";
-    }
+    @Autowired
+    SkiridjinjonjiService skiridjinjonjiService                                             ;
 
-    @PostMapping("/calculate")
-    public String calculateUri(@RequestParam("op1") double op1,
-                          @RequestParam("op2") double op2,
-                          @RequestParam("oper") String oper,
-                          Model model) {
-        double result = switch (oper) {
-            case "+" -> op1 + op2;
-            case "-" -> op1 - op2;
-            case "*" -> op1 * op2;
-            case "/" -> op1 / op2;
-            default -> 0.0f;
-        };
-        model.addAttribute("result", result);
-        return "result";
-    }
+    @GetMapping("/skiridjinjonjis")
+    public String getSkiridjinjonjisList(Model model)                                       {
+        ArrayList<Skiridjinjonji> skiridjinjonjis = skiridjinjonjiService.getAll()          ;
+        model.addAttribute("skiridjinjonjis", skiridjinjonjis)                   ;
+        return "skiridjinjonjis"                                                            ;}
 
-    @GetMapping("/calc")
-    public String calcUri() {
-        return "calculator";
-    }
+    @PutMapping("/skiridjinjonji")
+    public String updateSkiridjinjonji(Model model,
+                                       @RequestParam("id") int id,
+                                       @RequestParam("title") String title,
+                                       @RequestParam("vitali") String vitali)               {
+        Skiridjinjonji skiridjinjonji = new Skiridjinjonji(id, title, vitali)               ;
+        System.out.println("PUT REQ")                                                       ;
+        skiridjinjonjiService.editSkiridjinjonji(skiridjinjonji)                            ;
+        return "redirect:/skiridjinjonjis"                                                  ;}
 
-    @GetMapping("/cur")
-    public String currencyUri() {
-        return "currency";
-    }
+    @DeleteMapping("/skiridjinjonji")
+    public String deleteSkiridjinjonji(Model model,
+                                       @RequestParam("id") int id)                          {
+        skiridjinjonjiService.deleteSkiridjinjonji(id)                                      ;
+        return "redirect:/skiridjinjonjis"                                                  ;}
 
-    @PostMapping("/curcalculate")
-    public String calcCurUri(@RequestParam("cur1") String cur1,
-                             @RequestParam("cur2") String cur2,
-                             @RequestParam("count") double count,
-                             Model model) {
-        HashMap<String, Double> currency_list = new HashMap<>() {{
-            put("dol", 98.0d);
-            put("eur", 105.59d);
-            put("zlt", 24.48d);
-            put("nig", 0.058d);
-            put("rub", 1d);
-        }};
-        double result = currency_list.get(cur1)*count / currency_list.get(cur2);
-        model.addAttribute("result", result);
-        return "result";
-    }
-}
+    @PostMapping("/skiridjinjonji")
+    public String addSkiridjinjonji(Model model,
+                                    @RequestParam("title") String title,
+                                    @RequestParam("vitali") String vitali)                  {
+        skiridjinjonjiService.addSkiridjinjonji(new Skiridjinjonji(title, vitali))          ;
+        return "redirect:/skiridjinjonjis"                                                   ;
+                                                                                            }
+
+                                                                                            }

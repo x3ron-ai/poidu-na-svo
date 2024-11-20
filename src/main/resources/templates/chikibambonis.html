@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Чикибамбониксы))</title>
+    <style>
+        table {margin-top:15px;}
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div><a href="chikibambonis">Чикибамбонис</a></div>
+    <div><a href="skiridjinjonjis">Скириджинжонжи</a></div>
+
+</header>
+<form method="POST" action="/chikibamboni">
+    <p>Для создания новой записи</p>
+    <input placeholder="Имя" type="text" required name="name">
+    <input placeholder="Цвет" type="text" required name="color">
+    <button type="submit">Зачикибамбонить</button>
+</form>
+
+<form>
+    <p>Для редактирования</p>
+    <input placeholder="Имя" type="text" required name="name" id="edT">
+    <input placeholder="Цвет" type="text" required name="color" id="edV">
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Цвет</th>
+        <th>Удаление</th>
+        <th>Изменение</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="chikibamboni: ${chikibambonis}">
+        <tr>
+            <td th:text="${chikibamboni.getId()}"></td>
+            <td th:text="${chikibamboni.getName()}"></td>
+            <td th:text="${chikibamboni.getColor()}"></td>
+            <td><button th:onclick="@{'deleteChikibamboni('+${chikibamboni.getId()}+');'}">Разчикибамбонить(</button></td>
+            <td><button th:onclick="@{'editChikibamboni('+${chikibamboni.getId()}+');'}">Отчикибамбонить</button></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+<script>
+    function deleteChikibamboni(chikibamboniId) {
+        fetch(`/chikibamboni?id=${chikibamboniId}`, {method: 'DELETE'})
+            .then(response => {
+                location.reload();
+            }
+        )
+    }
+    function editChikibamboni(chikibamboniId) {
+        const edT = document.getElementById('edT').value;
+        const edV = document.getElementById('edV').value;
+        fetch(`/chikibamboni?id=${chikibamboniId}&name=${edT}&color=${edV}`, {method: 'PUT'})
+            .then(response => {
+                location.reload();
+            }
+        )
+    }
+</script>
+</body>
+</html>
