@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор</title>
+</head>
+<body>
+<form method="post" action="/curcalculate">
+    <input placeholder="Количество" type="number" name="count" required />
+    <select name='cur1'>
+        <option value="dol">Доллары</option>
+        <option value="eur">Евро</option>
+        <option value="zlt">Злотые</option>
+        <option value="nig">Нигерийские найры</option>
+        <option value="rub">Рубли</option>
+    </select>
+    <p>В -></p>
+    <select name='cur2'>
+        <option value="dol">Доллары</option>
+        <option value="eur">Евро</option>
+        <option value="zlt">Злотые</option>
+        <option value="nig">Нигерийские найры</option>
+        <option value="rub">Рубли</option>
+    </select>
+
+    <input type="submit" value="Посчитать"/>
+</form>
+</body>
+</html>
